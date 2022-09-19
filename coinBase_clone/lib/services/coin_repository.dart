@@ -26,11 +26,16 @@ if(response.statusCode==200){
 
 final decodeddata=  jsonDecode(response.body)as Map<String,dynamic>;
   final data= decodeddata['Data']as List<dynamic>;
+  
 
   return data.map((e) {
 return Coin.fromMap(e);
 
   }).toList();
+
+print(data);
+
+  
 
 
 }else{
