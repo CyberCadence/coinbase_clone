@@ -1,10 +1,9 @@
 import 'package:disney_clone/models/coinModel.dart';
+import 'package:disney_clone/pages/coin_pages.dart';
 import 'package:disney_clone/services/coin_repository.dart';
 import 'package:disney_clone/widgets/coin_card.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class COinDisplay extends StatefulWidget {
   const COinDisplay({Key? key}) : super(key: key);
@@ -18,14 +17,14 @@ class _COinDisplayState extends State<COinDisplay> {
 
   @override
   void initState() {
-    
     _getCoins = CoinRepository().getCoin();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Coin>>(future: _getCoins,
+    return FutureBuilder<List<Coin>>(
+      future: _getCoins,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.data != null) {
@@ -36,7 +35,13 @@ class _COinDisplayState extends State<COinDisplay> {
               child: Column(
                 children: coins
                     .map((coin) => GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CoinPage(coin: coin),
+                                ));
+                          },
                           child: CoinCard(coin: coin),
                         ))
                     .toList(),
