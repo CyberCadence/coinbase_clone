@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:disney_clone/models/coin_detailsmodel.dart';
 import 'package:disney_clone/models/data_error.dart';
 import 'package:http/http.dart'as http;
 
@@ -47,6 +48,39 @@ print(data);
   
 
 throw DataError(message: e.toString());
+
+}
+
+}
+
+
+Future<List<CoinData>>getHourlydata(String ticker)async{
+
+try {
+
+
+    http.Response response= await http.get(Uri.parse(_baseUrl+'/data/v2/histohour?fsym=$ticker&tsym=USD&limit=25'));
+
+
+if(response.statusCode==200){
+
+ final json=   jsonDecode(response.body)as Map<String,dynamic> ;
+  final data=  json['Data']['Data']as List<dynamic>;
+
+  return data.map((e) => CoinData.fromMap(e)).toList();
+
+
+}
+else{
+
+
+  throw Exception('Failed to load details');
+}
+  
+} catch (e) {
+
+
+ throw DataError(message: e.toString());
 
 }
 
